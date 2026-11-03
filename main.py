@@ -4,6 +4,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageOps
 from processor import MULTI, SINGLE, AveragingJob
+
+OUTPUT_FILE = Path("result.jpg")
  
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
