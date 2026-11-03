@@ -43,3 +43,18 @@ class AveragingJob:
             )
             for start, stop in split_into_bands(pixels.shape[0], size, thread_count)
         ]
+
+    @property
+    def thread_count(self) -> int:
+        return len(self.threads)
+ 
+    def start(self) -> None:
+        for thread in self.threads:
+            thread.start()
+ 
+    def is_done(self) -> bool:
+        return not any(thread.is_alive() for thread in self.threads)
+ 
+    def wait(self) -> None:
+        for thread in self.threads:
+            thread.join()
