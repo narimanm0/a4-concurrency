@@ -25,3 +25,21 @@ def split_into_bands(height: int, size: int, parts: int) -> list[tuple[int, int]
         row += rows_here
         bands.append((start, min(row * size, height)))
     return bands
+
+class AveragingJob:
+    """
+    - Averages `pixels` in place on background threads
+    - GUI thread can read `pixels` at any moment to show progress and call `is_done()` to know when to stop refreshing
+    """
+ 
+    def __init__(self, pixels: np.ndarray, size: int, mode: str):
+        thread_count = (os.cpu_count() or 1) if mode == MULTI else 1
+        self.pixels = pixels
+        self.threads = [
+            threading.Thread(
+                target=average_rows,
+                args=(pixels, start, stop, size),
+                daemon=True,
+            )
+            for start, stop in split_into_bands(pixels.shape[0], size, thread_count)
+        ]
