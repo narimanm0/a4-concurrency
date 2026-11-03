@@ -57,3 +57,12 @@ class ProgressViewer:
         self.label.pack()
         self.photo = None
         self._redraw()
+
+    def run(self) -> None:
+        self.root.after(START_DELAY_MS, self._start)
+        self.root.mainloop()
+ 
+    def _start(self) -> None:
+        self.root.title(f"processing with {self.job.thread_count} threads")
+        self.job.start()
+        self._tick()
