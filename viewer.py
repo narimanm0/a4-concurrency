@@ -68,20 +68,21 @@ class ProgressViewer:
         self._tick()
 
     def _tick(self) -> None:
+        finished = self.job.is_done()
         self._redraw()
-        if self.job.is_done():
+        if finished:
             self._finish()
         else:
             self.root.after(REFRESH_MS, self._tick)
  
     def _finish(self) -> None:
         Image.fromarray(self.job.pixels).save(self.output_path, quality=95)
-        self.root.title(f"Done - saved to {self.output_path}")
+        self.root.title(f"done and saved to {self.output_path}")
  
     def _redraw(self) -> None:
-        # copy first so worker threads can keep writing while we resize
-        snapshot = Image.fromarray(np.array(self.job.pixels))
-        shown = snapshot.resize(self.display_size, Image.BILINEAR)
+        shown = Image.fromarray(self.job.pixels).resize(
+            self.display_size, Image.BILINEAR, reducing_gap=2.0
+        )
         # keep a reference, or Tk drops it
         self.photo = ImageTk.PhotoImage(shown)
         self.label.configure(image=self.photo)
