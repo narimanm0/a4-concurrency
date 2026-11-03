@@ -34,5 +34,24 @@ def load_rgb(path: Path) -> np.ndarray:
     with Image.open(path) as image:
         return np.array(ImageOps.exif_transpose(image).convert("RGB"))
 
+def main() -> int:
+    args = parse_args()
+    try:
+        pixels = load_rgb(args.file)
+    except OSError as error:
+        print(f"Cannot open image: {error}", file=sys.stderr)
+        return 1
+ 
+    try:
+        # imported late: needs Tkinter
+        from viewer import ProgressViewer
+    except ImportError as error:
+        print(f"tkinter is required to show the window: {error}", file=sys.stderr)
+        return 1
+ 
+    job = AveragingJob(pixels, args.size, args.mode)
+    ProgressViewer(job, OUTPUT_FILE).run()
+    return 0
+
 if __name__ == "__main__":
     sys.exit(main())
