@@ -6,6 +6,9 @@ from PIL import Image, ImageOps
 from processor import MULTI, SINGLE, AveragingJob
 
 OUTPUT_FILE = Path("result.jpg")
+
+# Task allows images of any size; Pillow's default pixel limit would warn or refuse on very large photos
+Image.MAX_IMAGE_PIXELS = None
  
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
