@@ -22,3 +22,10 @@ def enable_dpi_awareness() -> None:
             ctypes.windll.shcore.SetProcessDpiAwareness(1)
         except (AttributeError, OSError):
             pass
+
+def fit_size(width: int, height: int, max_width: int, max_height: int) -> tuple[int, int]:
+    """
+    Largest size with the same aspect ratio that fits the limits
+    """
+    scale = min(max_width / width, max_height / height, 1.0)
+    return max(1, round(width * scale)), max(1, round(height * scale))
