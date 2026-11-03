@@ -32,5 +32,5 @@ def load_rgb(path: Path) -> np.ndarray:
     with Image.open(path) as image:
         return np.array(ImageOps.exif_transpose(image).convert("RGB"))
 
- if __name__ == "__main__":
+if __name__ == "__main__":
     sys.exit(main())
