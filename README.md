@@ -7,6 +7,18 @@ Shows a JPEG image and progressively replaces every `(square size) x (square siz
 - Python 3.9 or newer, with Tkinter
 - Packages from `requirements.txt` (NumPy, Pillow)
 
+
+## Which command starts Python?
+ 
+The name differs between systems. Use the first one that works for you. You can check with `--version`:
+ 
+| System        | Command                |
+|---------------|------------------------|
+| Windows       | `py` (or `python`)     |
+| macOS / Linux | `python3` (or `python`)|
+ 
+In the examples below, `python` stands for whichever command works on your computer, e.g. `py main.py...` on Windows or `python3 main.py...` on macOS.
+
 ## Setup
  
 ```
