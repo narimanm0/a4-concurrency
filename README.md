@@ -28,3 +28,11 @@ python main.py <file.jpg> <square_size> <S|M>
 Example: `python main.py JH_profile.jpg 20 M`
  
 The window first shows the original image, then the squares are averaged step by step. When processing finishes, `result.jpg` is written and the window stays open until you close it.
+
+## How it works
+ 
+- `averaging.py` - averages one square (the mean of each RGB channel, rounded) and walks a band of squares left-to-right, top-to-bottom.
+- `processor.py` - splits the image into horizontal bands of whole square rows. Mode `S` uses one band; mode `M` uses one band per CPU core (`os.cpu_count()`). Each thread works on its own band of one shared array, so threads never touch the same pixels and no locking is needed.
+- `viewer.py` - Tkinter window that redraws the shared array every 50 ms. Tkinter is only used from the main thread.
+- `main.py` - command-line parsing, image loading and saving. Large images: only the picture shown is scaled down to fit the screen. The averaging runs on, and `result.jpg` is saved from, the original full-resolution
+image. Squares on the right/bottom edge that don't fit completely are averaged over the pixels they contain.
