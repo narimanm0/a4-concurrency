@@ -24,3 +24,10 @@ def parse_args() -> argparse.Namespace:
     if not args.file.is_file():
         parser.error(f"file not found: {args.file}")
     return args
+
+def load_rgb(path: Path) -> np.ndarray:
+    """
+    - Load an image as an RGB uint8 array, honoring the camera's rotation flag
+    """
+    with Image.open(path) as image:
+        return np.array(ImageOps.exif_transpose(image).convert("RGB"))
