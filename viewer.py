@@ -11,3 +11,14 @@ REFRESH_MS = 50
 START_DELAY_MS = 1000
 # fraction of the screen the window may occupy
 SCREEN_MARGIN = 0.9
+
+def enable_dpi_awareness() -> None:
+    """
+    On Windows, report real screen pixels instead of scaled ones
+    """
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            ctypes.windll.shcore.SetProcessDpiAwareness(1)
+        except (AttributeError, OSError):
+            pass
